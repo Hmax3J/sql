@@ -152,7 +152,7 @@ select last_name, job_id,
 from employees;
 ----------------------
 
--- decode (기준값, 비교값, 리턴값(맨 끝에는 기본값))
+-- decode (기준값, 비교값, 리턴값, (맨 끝에는 기본값))
 
 select last_name, salary, 
     decode(trunc(salary / 2000),

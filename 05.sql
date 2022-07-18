@@ -19,7 +19,7 @@ from employees;
 -- group에서 자주 쓰이는 펑션
 -- count
 
-select count(*) -- 그룹 안에 레코드 개수를 나타낸다.
+select count(*) -- 그룹 안에 있는 레코드 개수를 나타낸다.
 from employees;
 
 -- 과제] 70번 부서원이 몇명인 지 조회하라.
@@ -105,3 +105,54 @@ select department_id, max(salary)
 from employees
 where max(salary) > 10000 -- having은 그룹을 골라낸다.
 group by department_id; -- error 조건문에 그룹 펑션이 포함되었으면 having을 쓴다.
+
+select job_id, sum(salary) payroll
+from employees
+where job_id not like '%REP%'
+group by job_id
+having sum(salary) > 13000
+order by payroll;
+
+-- 과제] 매니저ID, 매니저별 관리 직원들 중 최소월급을 조회하라.
+--      최소월급이 $6,000 초과여야 한다.
+select manager_id, min(salary)
+from employees
+where manager_id is not null
+group by manager_id
+having min(salary) > 6000
+order by 2 desc;
+---------------------------
+
+select max(avg(salary))
+from employees
+group by department_id;
+
+select sum(max(avg(salary)))
+from employees
+group by department_id; -- error, to deeply 2단계 까지만 된다.
+
+select department_id, round(avg(salary))
+from employees
+group by department_id;
+
+select department_id, round(avg(salary))
+from employees; -- error group by 가 있어야 한다.
+
+-- 과제] 2001년, 2002년, 2003년도별 입사자 수를 찾는다.
+select sum(decode(to_char(hire_date, 'yyyy'), '2001', 1, 0)) "2001",
+    sum(decode(to_char(hire_date, 'yyyy'), '2002', 1, 0)) "2002",
+    sum(decode(to_char(hire_date, 'yyyy'), '2003', 1, 0)) "2003"
+from employees;
+
+select count(case when hire_date like '2001%' then 1 else null end) "2001",
+    count(case when hire_date like '2002%' then 1 else null end) "2002",
+    count(case when hire_date like '2003%' then 1 else null end) "2003"
+from employees;
+
+-- 과제] 직업별, 부서별 월급합을 조회하라.
+--      부서는 20, 50, 80 이다.
+select job_id, sum(decode(department_id, 20, salary)) "20",
+    sum(decode(department_id, 50, salary)) "50",
+    sum(decode(department_id, 80, salary)) "80"
+from employees
+group by job_id;
