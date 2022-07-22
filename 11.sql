@@ -7,7 +7,7 @@ create view empvu80 as  -- view에는 데이터가 없다. table인거 처럼 행동한다.
     select employee_id, last_name, department_id
     from employees -- select 컬럼이 view의 구조가 된다.
     where department_id = 80; 
-    
+
 desc empvu80
 
 select * from empvu80;
