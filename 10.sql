@@ -47,11 +47,11 @@ create table emps(
 employee_id number(3) primary key,
 emp_name varchar2(10) constraint emps_empname_nn not null,
 email varchar2(20),
-salary number(6) constraint emps_sal_ck check(salary > 1000),
+salary number(6) constraint emps_sal_ck check(salary > 1000), -- 업무적인 조건에 사용한다.
 department_id number(3),
 constraint emps_email_uk unique(email), -- 유일한 값을 가지게 하는 제약조건
-constraint emps_deptid_fk foreign key(department_id)
-    references depts(department_id));
+constraint emps_deptid_fk foreign key(department_id) -- 자식테이블, 차일드 레코드
+    references depts(department_id)); -- 부모테이블, 페어런트 키 
     
 select constraint_name, constraint_type, table_name
 from user_constraints;
@@ -169,7 +169,7 @@ select * from sub_departments; -- 데이터 확인
 
 -- 테이블을 수정하는 방법
 drop table users cascade constraints; -- 제약조건까지 깔끔하게 삭제한다.
-
+-- 제약조건은 테이블과 별도의 객체이다. 아주 강하게 관계가 있는 객체다. 테이블이 없으면 의미가 없다.
 create table users(
 user_id number(3));
 desc users
